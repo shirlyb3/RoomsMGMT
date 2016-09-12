@@ -70,7 +70,7 @@ var UserSignUpForm = React.createClass({
 	},
 	render: function () {
 		var userTypeOptions = this.state.userTypes.map(function (type) {
-			return (<option key={type.key}>{type.value}</option>)
+			return (<option key={type.key}>{type.value}</option>);
 		});
 		return (
 			<form>
@@ -113,5 +113,4 @@ var UserSignUpForm = React.createClass({
 	}
 });
 
-ReactDOM.render(<UserSignUpForm url="/userTypes" />,
-	document.getElementById("loginForm"));
+module.exports = UserSignUpForm;

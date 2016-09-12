@@ -1,9 +1,17 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var browserify = require('browserify');
+var fs = require("fs");
 mongoose.Promise = require('q').Promise;
 
 var app = express();
+
+var b = browserify(__dirname + "/scripts/LoginBox.js")
+	.transform("babelify", {presets: ["es2015","react"]})
+	.bundle()
+	.pipe(fs.createWriteStream(__dirname + "/scripts/bundle.js"));;
+b.on('error',console.error);
 
 app.use('/scripts', express.static('scripts'));
 app.use(bodyParser.json());
@@ -37,15 +45,18 @@ app.get('/userTypes', function (req, res) {
 })
 
 app.post('/newUser', function (req, res) {
-	console.log(req.body);
-	//res.send("OK");
 	user = new User(req.body);
-	console.log(user);
-	/*user.save()
+	user.save()
 	.then(function () {
+		console.log("All Good");
 		res.status(200);
 		res.send("All good");
-	}, failCallbacks)*/
+	},
+	function (err) {
+		console.log(err);
+		res.status(420);
+		res.send(err);
+	})
 });
 
 app.listen(8889, function () {
