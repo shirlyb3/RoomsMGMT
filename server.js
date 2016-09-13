@@ -7,7 +7,7 @@ mongoose.Promise = require('q').Promise;
 
 var app = express();
 
-var b = browserify(__dirname + "/scripts/LoginBox.js")
+var b = browserify(__dirname + "/scripts/App.js")
 	.transform("babelify", {presets: ["es2015","react"]})
 	.bundle()
 	.pipe(fs.createWriteStream(__dirname + "/scripts/bundle.js"));;
@@ -48,14 +48,11 @@ app.post('/newUser', function (req, res) {
 	user = new User(req.body);
 	user.save()
 	.then(function () {
-		console.log("All Good");
 		res.status(200);
-		res.send("All good");
+		res.send({userId: user.userId});
 	},
 	function (err) {
-		console.log(err);
-		res.status(420);
-		res.send(err);
+		res.status(500).json(err);
 	})
 });
 

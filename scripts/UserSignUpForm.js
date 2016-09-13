@@ -24,6 +24,7 @@ var UserSignUpForm = React.createClass({
 	},
 	handleNewUserSubmit: function (e) {
 		e.preventDefault();
+		this.props.clearMessages();
 		$.ajax({
 				url: "/newUser",
 				type: "POST",
@@ -35,12 +36,16 @@ var UserSignUpForm = React.createClass({
 					name: this.state.userName,
 					email: this.state.userEmail
 				},
-				success: function (data, status) {
-					
-				},
+				success: function (result, status, xhr) {
+					console.log(result);
+					this.props.clearMessages();
+					this.props.handleSuccess(result.userId);
+				}.bind(this),
 				error: function (xhr, status, err) {
-					console.log(err.toString());
-				}
+					console.log(xhr.responseJSON.errmsg);
+					this.props.handleError(xhr.responseJSON.errmsg);
+					//console.log(err);
+				}.bind(this)
 			});	
 	},
 	handleUserChange: function (e) {
