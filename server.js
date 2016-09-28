@@ -44,6 +44,20 @@ app.get('/userTypes', function (req, res) {
 				value: 'Customer'}]);
 })
 
+app.post('/login', function (req, res) {
+	console.log("ID", req.body.userId, "pass", req.body.password);
+	var promise = User.findOne({'userId': req.body.userId, 'password': req.body.password}).exec();
+	promise.then(function (item) {
+		if(item){
+			res.send("You can login");
+		}
+		else{
+			res.status(500);
+			res.send("Wrong User Name or password");
+		}
+	});
+})
+
 app.post('/newUser', function (req, res) {
 	user = new User(req.body);
 	user.save()

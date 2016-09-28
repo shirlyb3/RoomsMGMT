@@ -1,39 +1,24 @@
+var LoginForm = require('./LoginForm.js');
+var MessageBox = require('./MessageBox.js');
+
 var LoginBox = React.createClass({
 	getInitialState: function() {
 		return {
-			userName: "",
-			password: "" 
+			messages: []
 		};
 	},
-	handleUserNameChange: function (e) {
+	handleError: function (message) {
+		var newMessages = this.state.messages.concat([{class: "error", text: message}]);
 		this.setState({
-			userName: e.target.value
+			messages: newMessages
 		});
-	},
-	handlePasswordChange: function (e) {
-		this.setState({
-			password: e.target.value
-		});
-	},
-	handleSubmit:function (e) {
-		
 	},
 	render: function() {
 		return (
-			<form>
-				<input
-					placeholder="User Name"
-					value={this.state.userName}
-					onChange={this.handleUserNameChange}/>
-				<input
-					type="password"
-					placeholder="Password"
-					value={this.state.password}
-					onChange={this.handlePasswordChange}/>
-				<input
-					type="submit"
-					onClick={this.handleSubmit}/>
-			</form>
+			<div>
+				<MessageBox data={this.state.messages} />
+				<LoginForm handleError={this.handleError} />
+			</div>
 		);
 	}
 

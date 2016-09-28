@@ -6,7 +6,7 @@ var MessageBox = React.createClass({
 			);
 		});
 		return (
-			<div>
+			<div id="message-box">
 				{messagesNode}
 			</div>
 		);
