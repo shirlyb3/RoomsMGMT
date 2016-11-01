@@ -30,8 +30,24 @@ var userSchema = mongoose.Schema({
 		type: String,
 		email: String
 	});
-
+	
 var User = mongoose.model('User', userSchema);
+
+var roomSchema = mongoose.Schema({
+	id: {type: Number, unique: true},
+	name: String,
+	location: String,
+	capacity: Number
+});
+
+var Room = mongoose.model('Room', roomSchema);
+
+var detailSchema = mongoose.Schema({
+	id: Number,
+	date: Date
+});
+
+var Detail = mongoose.model('Detail', detailSchema);
 
 app.get('/', function (req, res) {
 	res.sendFile(__dirname + "/views/index.html");
@@ -49,7 +65,7 @@ app.post('/login', function (req, res) {
 	var promise = User.findOne({'userId': req.body.userId, 'password': req.body.password}).exec();
 	promise.then(function (item) {
 		if(item){
-			res.send("You can login");
+			res.send(item);
 		}
 		else{
 			res.status(500);
@@ -68,6 +84,19 @@ app.post('/newUser', function (req, res) {
 	function (err) {
 		res.status(500).json(err);
 	})
+});
+
+app.get('/roomsList', function (req, res) {
+	var roomsPromise = Room.find({}).exec();
+
+	roomsPromise.then(function (result) {
+			if(result){
+				res.send(result);
+			}
+			else{
+				console.log("Error");
+			}
+		})
 });
 
 app.listen(8889, function () {

@@ -27,7 +27,7 @@ var LoginForm = React.createClass({
 				password: this.state.password
 			},
 			success: function (result, status, xhr) {
-				//TO DO: handle successful login
+				//this.props.handleUserLogin();
 				hashHistory.push('/');
 			}.bind(this),
 			error: function (err, status, xhr) {
@@ -51,6 +51,7 @@ var LoginForm = React.createClass({
 				<input
 					type="submit"
 					onClick={this.handleSubmit}/>
+				or <a href="#/signUp">Sign Up</a>
 			</form>
 		);
 	}
